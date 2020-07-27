@@ -3,10 +3,15 @@ import random
 import time
 import keyboard
 
-# give us time to head over to MSRD
-time.sleep(10)
-
 keepLooping = True
+
+
+def stoplooping():
+    keepLooping = False
+
+
+# wait 10 seconds so we can move to remote desktop window
+time.sleep(10)
 
 while keepLooping:
     randWaitTime = random.randint(1, 10)
@@ -21,7 +26,3 @@ while keepLooping:
     pyautogui.moveRel(randXOffset, randYOffset, randMoveDuration)
 
     time.sleep(randWaitTime)
-
-
-def stopLooping(self, parameter_list):
-    keepLooping = False
