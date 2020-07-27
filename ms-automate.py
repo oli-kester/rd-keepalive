@@ -1,28 +1,53 @@
-import pyautogui
 import random
 import time
-import keyboard
 
-keepLooping = True
+import pyautogui
 
-
-def stoplooping():
-    keepLooping = False
+keep_looping = True
+pyautogui.FAILSAFE = True
 
 
-# wait 10 seconds so we can move to remote desktop window
+def stop_looping():
+    global keep_looping
+    keep_looping = False
+
+
+# TODO implement event hook correctly. Doesn't work yet...
+
+# def key_pressed():
+#     key = keyboard.KeyboardEvent.name
+#     if key == "q":
+#         print(key, " pressed. Stopping...")
+#         stop_looping()
+#
+#
+# keyboard.hook(key_pressed())
+
+print("Program started. Stop mouse movements by moving mouse to any corner of screen. ")
+print("Now move to remote desktop. You have 10 seconds...")
+
 time.sleep(10)
 
-while keepLooping:
-    randWaitTime = random.randint(1, 10)
-    randXOffset = random.randint(-50, 50)
-    randYOffset = random.randint(-50, 50)
-    randMoveDuration = random.randint(1, 5)
+print("Beginning random mouse movements.  ")
 
-    mouseX, mouseY = pyautogui.position()
+try:
+    while keep_looping:
+        rand_wait_time = random.randint(1, 10)
+        rand_x_offset = random.randint(-50, 50)
+        rand_y_offset = random.randint(-50, 50)
+        rand_move_duration = random.randint(1, 5)
 
-    # TODO enforce bounds on mouse position
+        mouse_x, mouse_y = pyautogui.position()
+        screen_width, screen_height = pyautogui.size()
 
-    pyautogui.moveRel(randXOffset, randYOffset, randMoveDuration)
+        # if mouse is near screen edges, clip
 
-    time.sleep(randWaitTime)
+        print("Moving to", mouse_x, ", ", mouse_y)
+
+        pyautogui.moveRel(rand_x_offset, rand_y_offset, rand_move_duration)
+
+        print("Waiting...")
+
+        time.sleep(rand_wait_time)
+except pyautogui.FailSafeException:
+    print("Program Finished")
